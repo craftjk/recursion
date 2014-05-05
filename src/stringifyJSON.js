@@ -27,12 +27,27 @@ var stringifyJSON = function(obj) {
       result += "]";
     } else if (item.constructor === Object) {
       result += "{";
-
+      for (var i = 0 ; i < Object.keys(item).length ; i++) {
+        if (Object.keys(item)[i] === "null") {
+          result += "\"null\"";
+        } else if (item[Object.keys(item)[i]] !== null && item[Object.keys(item)[i]].constructor === Function) {
+          break;
+        } else {
+          recurse(Object.keys(item)[i]);
+        }
+        result += ":";
+        recurse(item[Object.keys(item)[i]]);
+        if (Object.keys(item).length > i + 1) {
+          result += ",";
+        }
+      }
       result += "}";
     } else if (item.constructor == String) {
       result += "\"";
       result += item; 
       result += "\"";
+    } else if (item.constructor == Function) {
+      result += "asdfasdfasd";
     } else if (item.toString().constructor == String) {
       result += item.toString();
     }
